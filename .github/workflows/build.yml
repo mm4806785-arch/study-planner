@@ -1,0 +1,30 @@
+name: Build APK
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Create android project and build
+        run: |
+          flutter create --platforms=android --project-name study_planner --org com.study _app
+          cp -f pubspec.yaml _app/pubspec.yaml
+          rm -rf _app/lib && mkdir -p _app/lib && cp main.dart _app/lib/main.dart
+          sed -i 's/android:label="[^"]*"/android:label="مساحتك الأكاديمية"/' _app/android/app/src/main/AndroidManifest.xml
+          cd _app
+          flutter pub get
+          flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: study-planner-apk
+          path: _app/build/app/outputs/flutter-apk/app-release.apk
