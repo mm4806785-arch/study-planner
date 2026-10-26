@@ -1,0 +1,14 @@
+name: study_planner
+description: مساحتك الأكاديمية - منظم المذاكرة
+publish_to: none
+version: 3.0.0+3
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  shared_preferences: ^2.2.0
+flutter:
+  uses-material-design: true
